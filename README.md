@@ -88,8 +88,8 @@ Poll every 20 seconds.
 
 #### debug
 
-Type: `~`  
-Default: `~`
+Type: `Boolean`  
+Default: `false`
 
 ## Contributing + Example
 
