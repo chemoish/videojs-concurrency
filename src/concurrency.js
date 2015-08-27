@@ -46,8 +46,8 @@ const defaults = {
  * @param {String} [options.method=GET]
  * @param {String} options.url
  *
- * @param {errorCallback} [options.error=noop]
- * @param {successCallback} [options.success=noop]
+ * @param {errorCallback(error)} [options.error=noop]
+ * @param {successCallback(response)} [options.success=noop]
  *
  * @param {Number} [options.idle_delay=30m]
  * @param {Number} [options.poll_delay=20s]
