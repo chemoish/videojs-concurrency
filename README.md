@@ -1,5 +1,7 @@
 # videojs-concurrency
 
+[![Build Status](https://travis-ci.org/chemoish/videojs-concurrency.svg)](https://travis-ci.org/chemoish/videojs-concurrency)
+
 > Video.js plugin for supporting concurrency.
 
 ## Getting Started
