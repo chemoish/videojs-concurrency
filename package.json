@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "webpack --config webpack.config.production.js",
+    "build": "webpack",
+    "deploy": "webpack && webpack --config webpack.config.production.js",
     "start": "webpack-dev-server --hot --config webpack.config.development.js",
     "test": "karma start --single-run"
   },
