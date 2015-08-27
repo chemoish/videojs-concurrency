@@ -23,7 +23,7 @@ const defaults = {
  * videojs('player_id', {
  *     plugins: {
  *         concurrency: {
- *             url: '/',
+ *             url: '/path/to/concurrency.server',
  *
  *             success: function (response) {
  *                 this.poll();
@@ -33,7 +33,7 @@ const defaults = {
  * });
  *
  * videojs('player_id').concurrency({
- *     url: '/',
+ *     url: '/path/to/concurrency.server',
  *     success: function (response) {
  *         this.poll();
  *     }
@@ -43,16 +43,16 @@ const defaults = {
  * @param {Object} options
  *
  * @param {Object} [options.data]
- * @param {Object} [options.method=GET]
- * @param {Object} options.url
+ * @param {String} [options.method=GET]
+ * @param {String} options.url
  *
- * @param {Object} [options.error=noop]
- * @param {Object} [options.success=noop]
+ * @param {errorCallback} [options.error=noop]
+ * @param {successCallback} [options.success=noop]
  *
- * @param {Object} [options.idle_delay=30m]
- * @param {Object} [options.poll_delay=20s]
+ * @param {Number} [options.idle_delay=30m]
+ * @param {Number} [options.poll_delay=20s]
  *
- * @param {Object} [options.debug=false]
+ * @param {Boolean} [options.debug=false]
  */
 
 class Concurrency {
