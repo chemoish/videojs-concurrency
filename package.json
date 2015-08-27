@@ -2,23 +2,29 @@
   "name": "videojs-concurrency",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/videojs.concurrency.min.js",
   "scripts": {
     "build": "webpack",
     "deploy": "webpack && webpack --config webpack.config.production.js",
     "start": "webpack-dev-server --hot --config webpack.config.development.js",
     "test": "karma start --single-run"
   },
+  "license": "MIT",
+  "author": "Carey Hinoki <carey.hinoki@gmail.com> (http://www.careyhinoki.me/)",
+  "homepage": "https://github.com/chemoish/videojs-concurrency",
   "repository": {
     "type": "git",
     "url": "https://github.com/chemoish/videojs-concurrency.git"
   },
-  "author": "Carey Hinoki <carey.hinoki@gmail.com> (http://www.careyhinoki.me/)",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/chemoish/videojs-concurrency/issues"
   },
-  "homepage": "https://github.com/chemoish/videojs-concurrency",
+  "keywords": [
+    "html5",
+    "player",
+    "video",
+    "videojs"
+  ],
   "devDependencies": {
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
