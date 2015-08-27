@@ -58,14 +58,14 @@ Type: `String`
 
 #### success
 
-Type: `successCallback`  
+Type: `successCallback(Response response)`  
 Default: `noop`
 
 Enables polling manipulation on successful concurrency request.
 
 #### error
 
-Type: `errorCallback`  
+Type: `errorCallback(Error error)`  
 Default: `noop`
 
 Enables polling manipulation on unsuccessful concurrency request.
