@@ -1,6 +1,16 @@
 import extend from './extend';
 
 let Url = {
+    /**
+     * @name Build
+     * @description
+     *
+     * @param {String} url
+     * @param {Object} options={}
+     * @param {Object} [options.data]
+     * @param {String} [options.method]
+     */
+
     build(url, options = {}) {
         if (new RegExp('^GET$', 'i').test(options.method) === false) {
             return url;
@@ -20,7 +30,7 @@ let Url = {
      * Creates a uri from a given host and data.
      *
      * @param {String} host
-     * @param {Object} data
+     * @param {Object} data={}
      *
      * @return {String} uri
      */
@@ -53,7 +63,7 @@ let Url = {
      * is extracted from both the options and the query string.
      *
      * @param {String} url
-     * @param {Object} options
+     * @param {Object} options={}
      *
      * @return {Object}
      */

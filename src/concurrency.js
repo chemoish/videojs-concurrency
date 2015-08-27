@@ -40,7 +40,7 @@ const defaults = {
  * });
  *
  * @param {Object} player VideoJS player
- * @param {Object} options
+ * @param {Object} options={}
  *
  * @param {Object} [options.data]
  * @param {String} [options.method=GET]

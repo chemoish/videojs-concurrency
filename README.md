@@ -72,14 +72,14 @@ Enables polling manipulation on unsuccessful concurrency request.
 
 ---
 
-#### idle delay
+#### idle_delay
 
 Type: `Number`  
 Default: `1000 * 60 * 30`
 
 When paused, become idle after 30 minutes.
 
-#### poll delay
+#### poll_delay
 
 Type: `Number`  
 Default: `1000 * 20`

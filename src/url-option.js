@@ -6,7 +6,7 @@ let UrlOption = {
      * @description
      * Transforms options into whatwg-fetch options.
      *
-     * @param {Object} options
+     * @param {Object} options={}
      * @param {Object} options.data
      * @param {Object} options.headers
      * @param {String} options.method
