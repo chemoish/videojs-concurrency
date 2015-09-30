@@ -1,19 +1,8 @@
+import 'console-polyfill';
 import 'whatwg-fetch';
 
-import Url from './url';
-import UrlOption from './url-option';
-
 import extend from './extend';
-
-import './console';
-
-const defaults = {
-    idle_delay: 1000 * 60 * 30,
-    poll_delay: 1000 * 20,
-    error:      Function.prototype,
-    method:     'GET',
-    success:    Function.prototype
-};
+import Url from './url';
 
 /**
  * @name Concurrency Plugin
@@ -57,6 +46,14 @@ const defaults = {
 
 class Concurrency {
     constructor(player, options = {}) {
+        const defaults = {
+            idle_delay: 1000 * 60 * 30,
+            poll_delay: 1000 * 20,
+            error:      Function.prototype,
+            method:     'GET',
+            success:    Function.prototype
+        };
+
         this.options = extend({}, defaults, options);
 
         this.idle_timeout_id = null;
@@ -70,10 +67,6 @@ class Concurrency {
     }
 
     error(message, ...messages) {
-        if (this.debug !== true) {
-            return;
-        }
-
         if (messages.length > 0) {
             console.error(message, messages);
         } else {
@@ -90,18 +83,6 @@ class Concurrency {
             console.log(message, messages);
         } else {
             console.log(message);
-        }
-    }
-
-    warn(message, ...messages) {
-        if (this.debug !== true) {
-            return;
-        }
-
-        if (messages.length > 0) {
-            console.warn(message, messages);
-        } else {
-            console.warn(message);
         }
     }
 
@@ -181,8 +162,8 @@ class Concurrency {
      */
 
     poll() {
-        let url = Url.build(this.options.url, this.options);
-        let url_options = UrlOption.build(this.options);
+        let url = Url.buildUrl(this.options.url, this.options);
+        let url_options = Url.buildOptions(this.options);
 
         this.log(`poll: ${url}`);
 

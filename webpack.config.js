@@ -1,8 +1,10 @@
-var webpack = require('webpack');
+var moment = require('moment'),
+    pkg = require('./package.json'),
+    webpack = require('webpack');
 
 module.exports = {
     entry: {
-        src: './src/concurrency.js'
+        src: './src/videojs-concurrency.js'
     },
 
     output: {
@@ -16,5 +18,18 @@ module.exports = {
             loader: 'babel-loader',
             test: /\.js$/
         }]
+    },
+
+    plugins: [
+        new webpack.BannerPlugin([
+            pkg.name + ' v' + pkg.version,
+            '',
+            '@author: ' + pkg.author,
+            '@date: ' + moment().format('YYYY-MM-DD')
+        ].join('\n'))
+    ],
+
+    externals: {
+        videojs: 'video.js'
     }
 };

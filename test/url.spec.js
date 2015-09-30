@@ -2,11 +2,11 @@ import Url from '../src/url';
 
 describe('url.js', function () {
     describe(':: buildUri()', function () {
-        it('should build a simple url correctly.', function () {
+        it('should build a simple uri correctly.', function () {
             expect(Url.buildUri('http://google.com')).toBe('http://google.com');
         });
 
-        it('should build a url with query string correctly.', function () {
+        it('should build a uri with query string correctly.', function () {
             expect(Url.buildUri('http://google.com', {
                 foo: 'foo'
             })).toBe('http://google.com?foo=foo');
@@ -15,6 +15,84 @@ describe('url.js', function () {
                 foo: 'foo',
                 bar: 'bar'
             })).toBe('http://google.com?foo=foo&bar=bar');
+        });
+    });
+
+    describe(':: buildUrl()', function () {
+        it('should build a GET url correctly.', function () {
+            expect(Url.buildUrl('http://google.com', {
+                method: 'GET'
+            })).toBe('http://google.com/');
+        });
+
+        it('should build a POST url correctly.', function () {
+            expect(Url.buildUrl('http://google.com', {
+                method: 'POST',
+                data: {
+                    foo: 'foo'
+                }
+            })).toBe('http://google.com');
+        });
+    });
+
+    describe(':: buildOptions()', function () {
+        describe('get:', function () {
+            it('should build correctly.', function () {
+                expect(Url.buildOptions({
+                    method: 'GET'
+                })).toEqual({});
+            });
+        });
+
+        describe('post:', function () {
+            it('should simple build correctly.', function () {
+                expect(Url.buildOptions({
+                    method: 'POST'
+                })).toEqual({
+                    method: 'POST',
+                    body: undefined,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+            });
+
+            it('should build with data correctly.', function () {
+                expect(Url.buildOptions({
+                    method: 'POST',
+                    data: {
+                        foo: 'foo'
+                    }
+                })).toEqual({
+                    method: 'POST',
+                    body: '{"foo":"foo"}',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+            });
+
+            it('should build with data and headers correctly.', function () {
+                expect(Url.buildOptions({
+                    method: 'POST',
+                    data: {
+                        foo: 'foo'
+                    },
+                    headers: {
+                        bar: 'bar'
+                    }
+                })).toEqual({
+                    method: 'POST',
+                    body: '{"foo":"foo"}',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        bar: 'bar'
+                    }
+                });
+            });
         });
     });
 

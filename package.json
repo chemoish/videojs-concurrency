@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "deploy": "webpack && webpack --config webpack.config.production.js",
-    "start": "webpack-dev-server --hot --config webpack.config.development.js",
+    "start": "webpack-dev-server -d --hot --config webpack.config.development.js",
     "test": "karma start --single-run"
   },
   "license": "MIT",
@@ -23,7 +23,8 @@
     "html5",
     "player",
     "video",
-    "videojs"
+    "videojs",
+    "videojs-plugin"
   ],
   "devDependencies": {
     "babel-core": "^5.8.22",
@@ -38,14 +39,16 @@
     "karma-phantomjs-launcher": "^0.2.1",
     "karma-webpack": "^1.7.0",
     "load-grunt-tasks": "^3.2.0",
+    "moment": "^2.10.6",
     "phantomjs": "^1.9.18",
     "time-grunt": "^1.2.1",
-    "video.js": "^4.12.14",
+    "video.js": "^5.0.0",
     "webpack": "^1.12.0",
     "webpack-config": "^0.8.0",
     "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {
+    "console-polyfill": "^0.2.2",
     "whatwg-fetch": "^0.9.0"
   }
 }
