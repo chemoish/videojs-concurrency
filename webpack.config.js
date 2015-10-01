@@ -13,6 +13,12 @@ module.exports = {
     },
 
     module: {
+        preLoaders: [{
+            exclude: /node_modules/,
+            loader:  'eslint-loader',
+            test:    /\.js$/
+        }],
+
         loaders: [{
             exclude: /node_modules/,
             loader: 'babel-loader',
