@@ -2,29 +2,6 @@ import extend from './extend';
 
 let Url = {
     /**
-     * @name Build
-     * @description
-     *
-     * @param {String} url
-     * @param {Object} options={}
-     * @param {Object} [options.data]
-     * @param {String} [options.method]
-     */
-
-    build(url, options = {}) {
-        if (new RegExp('^GET$', 'i').test(options.method) === false) {
-            return url;
-        }
-
-        let {
-            data,
-            host
-        } = this.parseUrl(url, options);
-
-        return this.buildUri(host, data);
-    },
-
-    /**
      * @name Build Uri
      * @description
      * Creates a uri from a given host and data.
@@ -54,6 +31,59 @@ let Url = {
         }
 
         return uri;
+    },
+
+    /**
+     * @name Build Url
+     * @description
+     * Create a url from a given host, data, and method.
+     *
+     * @param {String} url
+     * @param {Object} options={}
+     * @param {Object} [options.data]
+     * @param {String} [options.method]
+     */
+
+    buildUrl(url, options = {}) {
+        if (new RegExp('^GET$', 'i').test(options.method) === false) {
+            return url;
+        }
+
+        let {
+            data,
+            host
+        } = this.parseUrl(url, options);
+
+        return this.buildUri(host, data);
+    },
+
+    /**
+     * @name Build Options
+     * @description
+     * Transforms options into whatwg-fetch options.
+     *
+     * @param {Object} options={}
+     * @param {Object} options.data
+     * @param {Object} options.headers
+     * @param {String} options.method
+     *
+     * @return {Object} url_options
+     */
+
+    buildOptions(options = {}) {
+        let url_options = {};
+
+        if (new RegExp('^POST$', 'i').test(options.method)) {
+            url_options.body   = JSON.stringify(options.data);
+            url_options.method = options.method;
+
+            url_options.headers = extend({}, {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }, options.headers);
+        }
+
+        return url_options;
     },
 
     /**

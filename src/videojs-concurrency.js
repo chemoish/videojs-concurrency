@@ -1,19 +1,8 @@
+import 'console-polyfill';
 import 'whatwg-fetch';
 
-import Url from './url';
-import UrlOption from './url-option';
-
 import extend from './extend';
-
-import './console';
-
-const defaults = {
-    idle_delay: 1000 * 60 * 30,
-    poll_delay: 1000 * 20,
-    error:      Function.prototype,
-    method:     'GET',
-    success:    Function.prototype
-};
+import Url from './url';
 
 /**
  * @name Concurrency Plugin
@@ -55,8 +44,16 @@ const defaults = {
  * @param {Boolean} [options.debug=false]
  */
 
-class Concurrency {
-    constructor(player, options = {}) {
+var Concurrency = {
+    init(player, options = {}) {
+        const defaults = {
+            idle_delay: 1000 * 60 * 30,
+            poll_delay: 1000 * 20,
+            error:      Function.prototype,
+            method:     'GET',
+            success:    Function.prototype
+        };
+
         this.options = extend({}, defaults, options);
 
         this.idle_timeout_id = null;
@@ -67,19 +64,15 @@ class Concurrency {
         player.on('ended', this.onEnded.bind(this));
         player.on('pause', this.onPause.bind(this));
         player.on('play', this.onPlay.bind(this));
-    }
+    },
 
     error(message, ...messages) {
-        if (this.debug !== true) {
-            return;
-        }
-
         if (messages.length > 0) {
             console.error(message, messages);
         } else {
             console.error(message);
         }
-    }
+    },
 
     log(message, ...messages) {
         if (this.debug !== true) {
@@ -91,19 +84,7 @@ class Concurrency {
         } else {
             console.log(message);
         }
-    }
-
-    warn(message, ...messages) {
-        if (this.debug !== true) {
-            return;
-        }
-
-        if (messages.length > 0) {
-            console.warn(message, messages);
-        } else {
-            console.warn(message);
-        }
-    }
+    },
 
     /**
      * @name On Ended
@@ -124,7 +105,7 @@ class Concurrency {
 
         // kill poll timer
         clearTimeout(this.poll_timeout_id);
-    }
+    },
 
     /**
      * @name On Pause
@@ -139,14 +120,14 @@ class Concurrency {
 
         this.log(`poll: stopping in ${this.options.idle_delay}ms`);
 
-        this.idle_timeout_id = setTimeout(function () {
+        this.idle_timeout_id = setTimeout(() => {
             this.log('poll: reset');
             this.log('poll: stopped');
 
             // kill poll timer
             clearTimeout(this.poll_timeout_id);
-        }.bind(this), this.options.idle_delay);
-    }
+        }, this.options.idle_delay);
+    },
 
     /**
      * @name On Play
@@ -169,7 +150,7 @@ class Concurrency {
         this.log(`poll: running every ${this.options.poll_delay}ms`);
 
         this.poll();
-    }
+    },
 
     /**
      * @name Poll
@@ -181,8 +162,8 @@ class Concurrency {
      */
 
     poll() {
-        let url = Url.build(this.options.url, this.options);
-        let url_options = UrlOption.build(this.options);
+        let url = Url.buildUrl(this.options.url, this.options);
+        let url_options = Url.buildOptions(this.options);
 
         this.log(`poll: ${url}`);
 
@@ -191,20 +172,20 @@ class Concurrency {
                 return response.json();
             })
 
-            .then(function (body) {
-                this.poll_timeout_id = setTimeout(function () {
+            .then((body) => {
+                this.poll_timeout_id = setTimeout(() => {
                     this.options.success.apply(this, [body]);
-                }.bind(this), this.options.poll_delay);
-            }.bind(this))
+                }, this.options.poll_delay);
+            })
 
-            .catch(function (error) {
+            .catch((error) => {
                 this.error(error);
 
                 this.options.error.apply(this, [error]);
-            }.bind(this));
+            });
     }
-}
+};
 
 videojs.plugin('concurrency', function concurrency(options) {
-    new Concurrency(this, options);
+    Concurrency.init(this, options);
 });

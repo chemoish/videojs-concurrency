@@ -4,7 +4,7 @@ var webpack = require('webpack'),
 module.exports = webpackConfig.fromCwd().merge({
     devServer: {
         colors:             true,
-        contentBase:        './example',
+        contentBase:        '.',
         historyApiFallback: true,
         inline:             true,
         progress:           true

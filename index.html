@@ -10,10 +10,10 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+        <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
     </head>
     <body>
-        <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" height="300" width="600" controls>
+        <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" height="250" width="600" controls>
             <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
             <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
             <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
@@ -24,14 +24,14 @@
             </p>
         </video>
 
-        <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+        <script src="node_modules/video.js/dist/video.js"></script>
         <script src="videojs.concurrency.js"></script>
 
         <script>
             // initialize the plugin
             videojs('player').ready(function () {
                 this.concurrency({
-                    url: '/sample.json?_token=12345',
+                    url: '/package.json?_token=12345',
                     data: {
                         id: '54321'
                     },
@@ -40,7 +40,7 @@
                     poll_delay: 2000,
 
                     success: function (response) {
-                        this.options.url = '/sample.json?_token=' + Math.floor(Math.random() * 10000);
+                        this.options.url = '/package.json?_token=' + Math.floor(Math.random() * 10000);
                         this.options.data.id = Math.floor(Math.random() * 10000);
 
                         this.poll();
