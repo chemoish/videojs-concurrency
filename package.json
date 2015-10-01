@@ -1,6 +1,6 @@
 {
   "name": "videojs-concurrency",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "",
   "main": "./dist/videojs.concurrency.min.js",
   "scripts": {
