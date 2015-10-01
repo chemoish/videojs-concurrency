@@ -1,3 +1,9 @@
+/*!
+ * videojs-concurrency v1.0.0
+ * 
+ * @author: Carey Hinoki <carey.hinoki@gmail.com> (http://www.careyhinoki.me/)
+ * @date: 2015-10-01
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -46,35 +52,19 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	__webpack_require__(1);
 
-	var _url = __webpack_require__(2);
-
-	var _url2 = _interopRequireDefault(_url);
-
-	var _urlOption = __webpack_require__(4);
-
-	var _urlOption2 = _interopRequireDefault(_urlOption);
+	__webpack_require__(2);
 
 	var _extend = __webpack_require__(3);
 
 	var _extend2 = _interopRequireDefault(_extend);
 
-	__webpack_require__(5);
+	var _url = __webpack_require__(4);
 
-	var defaults = {
-	    idle_delay: 1000 * 60 * 30,
-	    poll_delay: 1000 * 20,
-	    error: Function.prototype,
-	    method: 'GET',
-	    success: Function.prototype
-	};
+	var _url2 = _interopRequireDefault(_url);
 
 	/**
 	 * @name Concurrency Plugin
@@ -101,14 +91,14 @@
 	 * });
 	 *
 	 * @param {Object} player VideoJS player
-	 * @param {Object} options
+	 * @param {Object} options={}
 	 *
 	 * @param {Object} [options.data]
 	 * @param {String} [options.method=GET]
 	 * @param {String} options.url
 	 *
-	 * @param {errorCallback} [options.error=noop]
-	 * @param {successCallback} [options.success=noop]
+	 * @param {errorCallback(error)} [options.error=noop]
+	 * @param {successCallback(response)} [options.success=noop]
 	 *
 	 * @param {Number} [options.idle_delay=30m]
 	 * @param {Number} [options.poll_delay=20s]
@@ -116,11 +106,17 @@
 	 * @param {Boolean} [options.debug=false]
 	 */
 
-	var Concurrency = (function () {
-	    function Concurrency(player) {
+	var Concurrency = {
+	    init: function init(player) {
 	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-	        _classCallCheck(this, Concurrency);
+	        var defaults = {
+	            idle_delay: 1000 * 60 * 30,
+	            poll_delay: 1000 * 20,
+	            error: Function.prototype,
+	            method: 'GET',
+	            success: Function.prototype
+	        };
 
 	        this.options = (0, _extend2['default'])({}, defaults, options);
 
@@ -132,172 +128,167 @@
 	        player.on('ended', this.onEnded.bind(this));
 	        player.on('pause', this.onPause.bind(this));
 	        player.on('play', this.onPlay.bind(this));
-	    }
+	    },
 
-	    _createClass(Concurrency, [{
-	        key: 'error',
-	        value: function error(message) {
-	            if (this.debug !== true) {
-	                return;
-	            }
-
-	            for (var _len = arguments.length, messages = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	                messages[_key - 1] = arguments[_key];
-	            }
-
-	            if (messages.length > 0) {
-	                console.error(message, messages);
-	            } else {
-	                console.error(message);
-	            }
-	        }
-	    }, {
-	        key: 'log',
-	        value: function log(message) {
-	            if (this.debug !== true) {
-	                return;
-	            }
-
-	            for (var _len2 = arguments.length, messages = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-	                messages[_key2 - 1] = arguments[_key2];
-	            }
-
-	            if (messages.length > 0) {
-	                console.log(message, messages);
-	            } else {
-	                console.log(message);
-	            }
-	        }
-	    }, {
-	        key: 'warn',
-	        value: function warn(message) {
-	            if (this.debug !== true) {
-	                return;
-	            }
-
-	            for (var _len3 = arguments.length, messages = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-	                messages[_key3 - 1] = arguments[_key3];
-	            }
-
-	            if (messages.length > 0) {
-	                console.warn(message, messages);
-	            } else {
-	                console.warn(message);
-	            }
+	    error: function error(message) {
+	        for (var _len = arguments.length, messages = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	            messages[_key - 1] = arguments[_key];
 	        }
 
-	        /**
-	         * @name On Ended
-	         * @description
-	         * Initiates concurrency stopping on video end.
-	         *
-	         * @param {Object} event
-	         */
+	        if (messages.length > 0) {
+	            console.error(message, messages);
+	        } else {
+	            console.error(message);
+	        }
+	    },
 
-	    }, {
-	        key: 'onEnded',
-	        value: function onEnded(event) {
-	            this.log('ended');
+	    log: function log(message) {
+	        if (this.debug !== true) {
+	            return;
+	        }
 
-	            this.log('poll: reset');
-	            this.log('poll: stopped');
+	        for (var _len2 = arguments.length, messages = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	            messages[_key2 - 1] = arguments[_key2];
+	        }
 
-	            // kill idle timer
-	            clearTimeout(this.idle_timeout_id);
+	        if (messages.length > 0) {
+	            console.log(message, messages);
+	        } else {
+	            console.log(message);
+	        }
+	    },
+
+	    /**
+	     * @name On Ended
+	     * @description
+	     * Initiates concurrency stopping on video end.
+	     *
+	     * @param {Object} event
+	     */
+
+	    onEnded: function onEnded(event) {
+	        this.log('ended');
+
+	        this.log('poll: reset');
+	        this.log('poll: stopped');
+
+	        // kill idle timer
+	        clearTimeout(this.idle_timeout_id);
+
+	        // kill poll timer
+	        clearTimeout(this.poll_timeout_id);
+	    },
+
+	    /**
+	     * @name On Pause
+	     * @description
+	     * Initiates concurrency stopping on video pause (After set delay).
+	     *
+	     * @param {Object} event
+	     */
+
+	    onPause: function onPause(event) {
+	        var _this = this;
+
+	        this.log('pause');
+
+	        this.log('poll: stopping in ' + this.options.idle_delay + 'ms');
+
+	        this.idle_timeout_id = setTimeout(function () {
+	            _this.log('poll: reset');
+	            _this.log('poll: stopped');
 
 	            // kill poll timer
-	            clearTimeout(this.poll_timeout_id);
-	        }
+	            clearTimeout(_this.poll_timeout_id);
+	        }, this.options.idle_delay);
+	    },
 
-	        /**
-	         * @name On Pause
-	         * @description
-	         * Initiates concurrency stopping on video pause (After set delay).
-	         *
-	         * @param {Object} event
-	         */
+	    /**
+	     * @name On Play
+	     * @description
+	     * Initiates concurrency polling on video play.
+	     *
+	     * @param {Object} event
+	     */
 
-	    }, {
-	        key: 'onPause',
-	        value: function onPause(event) {
-	            this.log('pause');
+	    onPlay: function onPlay(event) {
+	        this.log('play');
 
-	            this.log('poll: stopping in ' + this.options.idle_delay + 'ms');
+	        // kill existing idle timer
+	        clearTimeout(this.idle_timeout_id);
 
-	            this.idle_timeout_id = setTimeout((function () {
-	                this.log('poll: reset');
-	                this.log('poll: stopped');
+	        // kill existing poll timer
+	        clearTimeout(this.poll_timeout_id);
 
-	                // kill poll timer
-	                clearTimeout(this.poll_timeout_id);
-	            }).bind(this), this.options.idle_delay);
-	        }
+	        this.log('poll: reset');
+	        this.log('poll: running every ' + this.options.poll_delay + 'ms');
 
-	        /**
-	         * @name On Play
-	         * @description
-	         * Initiates concurrency polling on video play.
-	         *
-	         * @param {Object} event
-	         */
+	        this.poll();
+	    },
 
-	    }, {
-	        key: 'onPlay',
-	        value: function onPlay(event) {
-	            this.log('play');
+	    /**
+	     * @name Poll
+	     * @description
+	     * Polls the configured concurrency server then executes the provided callback
+	     * to determine how to proceed.
+	     *
+	     * This method currently only accepts json.
+	     */
 
-	            // kill existing idle timer
-	            clearTimeout(this.idle_timeout_id);
+	    poll: function poll() {
+	        var _this2 = this;
 
-	            // kill existing poll timer
-	            clearTimeout(this.poll_timeout_id);
+	        var url = _url2['default'].buildUrl(this.options.url, this.options);
+	        var url_options = _url2['default'].buildOptions(this.options);
 
-	            this.log('poll: reset');
-	            this.log('poll: running every ' + this.options.poll_delay + 'ms');
+	        this.log('poll: ' + url);
 
-	            this.poll();
-	        }
+	        fetch(url, url_options).then(function (response) {
+	            return response.json();
+	        }).then(function (body) {
+	            _this2.poll_timeout_id = setTimeout(function () {
+	                _this2.options.success.apply(_this2, [body]);
+	            }, _this2.options.poll_delay);
+	        })['catch'](function (error) {
+	            _this2.error(error);
 
-	        /**
-	         * @name Poll
-	         * @description
-	         * Polls the configured concurrency server then executes the provided callback
-	         * to determine how to proceed.
-	         *
-	         * This method currently only accepts json.
-	         */
-
-	    }, {
-	        key: 'poll',
-	        value: function poll() {
-	            var url = _url2['default'].build(this.options.url, this.options);
-	            var url_options = _urlOption2['default'].build(this.options);
-
-	            this.log('poll: ' + url);
-
-	            fetch(url, url_options).then(function (response) {
-	                return response.json();
-	            }).then((function (body) {
-	                this.poll_timeout_id = setTimeout((function () {
-	                    this.options.success.apply(this, [body]);
-	                }).bind(this), this.options.poll_delay);
-	            }).bind(this))['catch']((function (error) {
-	                this.error(error);
-
-	                this.options.error.apply(this, [error]);
-	            }).bind(this));
-	        }
-	    }]);
-
-	    return Concurrency;
-	})();
+	            _this2.options.error.apply(_this2, [error]);
+	        });
+	    }
+	};
 
 	videojs.plugin('concurrency', function concurrency(options) {
-	    new Concurrency(this, options);
+	    Concurrency.init(this, options);
 	});
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	// Console-polyfill. MIT license.
+	// https://github.com/paulmillr/console-polyfill
+	// Make it safe to do console.log() always.
+	(function(global) {
+	  'use strict';
+	  global.console = global.console || {};
+	  var con = global.console;
+	  var prop, method;
+	  var empty = {};
+	  var dummy = function() {};
+	  var properties = 'memory'.split(',');
+	  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+	     'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+	     'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+	  while (prop = properties.pop()) if (!con[prop]) con[prop] = empty;
+	  while (method = methods.pop()) if (!con[method]) con[method] = dummy;
+	})(typeof window === 'undefined' ? this : window);
+	// Using `this` for web workers while maintaining compatibility with browser
+	// targeted script loaders such as Browserify or Webpack where the only way to
+	// get to the global object is via `window`.
+
+
+/***/ },
+/* 2 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -633,7 +624,36 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = extend;
+
+	function extend(obj) {
+	    var arg, i, k;
+
+	    for (i = 1; i < arguments.length; i++) {
+	        arg = arguments[i];
+
+	        for (k in arg) {
+	            if (arg.hasOwnProperty(k) && typeof arg[k] !== 'undefined') {
+	                obj[k] = arg[k];
+	            }
+	        }
+	    }
+
+	    return obj;
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -651,28 +671,13 @@
 	var _extend2 = _interopRequireDefault(_extend);
 
 	var Url = {
-	    build: function build(url) {
-	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	        if (new RegExp('^GET$', 'i').test(options.method) === false) {
-	            return url;
-	        }
-
-	        var _parseUrl = this.parseUrl(url, options);
-
-	        var data = _parseUrl.data;
-	        var host = _parseUrl.host;
-
-	        return this.buildUri(host, data);
-	    },
-
 	    /**
 	     * @name Build Uri
 	     * @description
 	     * Creates a uri from a given host and data.
 	     *
 	     * @param {String} host
-	     * @param {Object} data
+	     * @param {Object} data={}
 	     *
 	     * @return {String} uri
 	     */
@@ -701,13 +706,70 @@
 	    },
 
 	    /**
+	     * @name Build Url
+	     * @description
+	     * Create a url from a given host, data, and method.
+	     *
+	     * @param {String} url
+	     * @param {Object} options={}
+	     * @param {Object} [options.data]
+	     * @param {String} [options.method]
+	     */
+
+	    buildUrl: function buildUrl(url) {
+	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	        if (new RegExp('^GET$', 'i').test(options.method) === false) {
+	            return url;
+	        }
+
+	        var _parseUrl = this.parseUrl(url, options);
+
+	        var data = _parseUrl.data;
+	        var host = _parseUrl.host;
+
+	        return this.buildUri(host, data);
+	    },
+
+	    /**
+	     * @name Build Options
+	     * @description
+	     * Transforms options into whatwg-fetch options.
+	     *
+	     * @param {Object} options={}
+	     * @param {Object} options.data
+	     * @param {Object} options.headers
+	     * @param {String} options.method
+	     *
+	     * @return {Object} url_options
+	     */
+
+	    buildOptions: function buildOptions() {
+	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	        var url_options = {};
+
+	        if (new RegExp('^POST$', 'i').test(options.method)) {
+	            url_options.body = JSON.stringify(options.data);
+	            url_options.method = options.method;
+
+	            url_options.headers = (0, _extend2['default'])({}, {
+	                'Accept': 'application/json',
+	                'Content-Type': 'application/json'
+	            }, options.headers);
+	        }
+
+	        return url_options;
+	    },
+
+	    /**
 	     * @name Parse Url
 	     * @description
 	     * Returns the host and normalized data from a url. The data
 	     * is extracted from both the options and the query string.
 	     *
 	     * @param {String} url
-	     * @param {Object} options
+	     * @param {Object} options={}
 	     *
 	     * @return {Object}
 	     */
@@ -754,104 +816,6 @@
 
 	exports['default'] = Url;
 	module.exports = exports['default'];
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports["default"] = extend;
-
-	function extend(obj) {
-	    var arg, i, k;
-
-	    for (i = 1; i < arguments.length; i++) {
-	        arg = arguments[i];
-
-	        for (k in arg) {
-	            if (arg.hasOwnProperty(k) && arg[k] !== undefined) {
-	                obj[k] = arg[k];
-	            }
-	        }
-	    }
-
-	    return obj;
-	}
-
-	module.exports = exports["default"];
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _extend = __webpack_require__(3);
-
-	var _extend2 = _interopRequireDefault(_extend);
-
-	var UrlOption = {
-	    /**
-	     * @name Build
-	     * @description
-	     * Transforms options into whatwg-fetch options.
-	     *
-	     * @param {Object} options
-	     * @param {Object} options.data
-	     * @param {Object} options.headers
-	     * @param {String} options.method
-	     *
-	     * @return {Object} url_options
-	     */
-
-	    build: function build() {
-	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	        var url_options = {};
-
-	        if (new RegExp('^POST$', 'i').test(options.method)) {
-	            url_options.body = JSON.stringify(options.data);
-	            url_options.method = options.method;
-
-	            url_options.headers = (0, _extend2['default'])({}, {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'
-	            }, options.headers);
-	        }
-
-	        return url_options;
-	    }
-	};
-
-	exports['default'] = UrlOption;
-	module.exports = exports['default'];
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var method,
-	    methods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'],
-	    length = methods.length,
-	    console = window.console = window.console || {};
-
-	while (length--) {
-	    method = methods[length];
-
-	    !console[method] && (console[method] = function () {});
-	}
 
 /***/ }
 /******/ ]);
