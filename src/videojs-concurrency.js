@@ -44,8 +44,8 @@ import Url from './url';
  * @param {Boolean} [options.debug=false]
  */
 
-class Concurrency {
-    constructor(player, options = {}) {
+var Concurrency = {
+    init(player, options = {}) {
         const defaults = {
             idle_delay: 1000 * 60 * 30,
             poll_delay: 1000 * 20,
@@ -64,7 +64,7 @@ class Concurrency {
         player.on('ended', this.onEnded.bind(this));
         player.on('pause', this.onPause.bind(this));
         player.on('play', this.onPlay.bind(this));
-    }
+    },
 
     error(message, ...messages) {
         if (messages.length > 0) {
@@ -72,7 +72,7 @@ class Concurrency {
         } else {
             console.error(message);
         }
-    }
+    },
 
     log(message, ...messages) {
         if (this.debug !== true) {
@@ -84,7 +84,7 @@ class Concurrency {
         } else {
             console.log(message);
         }
-    }
+    },
 
     /**
      * @name On Ended
@@ -105,7 +105,7 @@ class Concurrency {
 
         // kill poll timer
         clearTimeout(this.poll_timeout_id);
-    }
+    },
 
     /**
      * @name On Pause
@@ -120,14 +120,14 @@ class Concurrency {
 
         this.log(`poll: stopping in ${this.options.idle_delay}ms`);
 
-        this.idle_timeout_id = setTimeout(function () {
+        this.idle_timeout_id = setTimeout(() => {
             this.log('poll: reset');
             this.log('poll: stopped');
 
             // kill poll timer
             clearTimeout(this.poll_timeout_id);
-        }.bind(this), this.options.idle_delay);
-    }
+        }, this.options.idle_delay);
+    },
 
     /**
      * @name On Play
@@ -150,7 +150,7 @@ class Concurrency {
         this.log(`poll: running every ${this.options.poll_delay}ms`);
 
         this.poll();
-    }
+    },
 
     /**
      * @name Poll
@@ -172,20 +172,20 @@ class Concurrency {
                 return response.json();
             })
 
-            .then(function (body) {
-                this.poll_timeout_id = setTimeout(function () {
+            .then((body) => {
+                this.poll_timeout_id = setTimeout(() => {
                     this.options.success.apply(this, [body]);
-                }.bind(this), this.options.poll_delay);
-            }.bind(this))
+                }, this.options.poll_delay);
+            })
 
-            .catch(function (error) {
+            .catch((error) => {
                 this.error(error);
 
                 this.options.error.apply(this, [error]);
-            }.bind(this));
+            });
     }
-}
+};
 
 videojs.plugin('concurrency', function concurrency(options) {
-    new Concurrency(this, options);
+    Concurrency.init(this, options);
 });

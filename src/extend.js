@@ -5,7 +5,7 @@ export default function extend(obj) {
         arg = arguments[i];
 
         for (k in arg) {
-            if (arg.hasOwnProperty(k) && arg[k] !== undefined) {
+            if (arg.hasOwnProperty(k) && typeof arg[k] !== 'undefined') {
                 obj[k] = arg[k];
             }
         }
