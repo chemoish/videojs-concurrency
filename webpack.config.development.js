@@ -1,5 +1,4 @@
-var webpack = require('webpack'),
-    webpackConfig = require('webpack-config');
+var webpackConfig = require('webpack-config');
 
 module.exports = webpackConfig.fromCwd().merge({
     devServer: {

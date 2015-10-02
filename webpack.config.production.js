@@ -1,13 +1,20 @@
-var webpack = require('webpack'),
-    webpackConfig = require('webpack-config');
+var Clean             = require('clean-webpack-plugin'),
+    webpack           = require('webpack'),
+    webpackConfig     = require('webpack-config');
 
-module.exports = webpackConfig.fromCwd().merge({
+var config = webpackConfig.fromCwd().merge({
     output: {
-        filename: 'videojs.concurrency.min.js',
-    },
-
-    plugins: [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin()
-    ]
+        filename: 'videojs.concurrency.min.js'
+    }
 });
+
+config.plugins = [
+    new Clean([
+        'build'
+    ]),
+
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin()
+];
+
+module.exports = config;
