@@ -4,8 +4,8 @@
   "description": "",
   "main": "./dist/videojs.concurrency.min.js",
   "scripts": {
-    "build": "webpack",
-    "deploy": "webpack && webpack --config webpack.config.production.js",
+    "build": "webpack --progress",
+    "deploy": "npm run build && webpack --progress --config webpack.config.production.js",
     "start": "webpack-dev-server -d --hot --config webpack.config.development.js",
     "test": "karma start --single-run"
   },
