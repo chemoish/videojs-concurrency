@@ -1,6 +1,6 @@
 {
   "name": "videojs-concurrency",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Video.js plugin for supporting concurrency",
   "main": "./dist/videojs.concurrency.min.js",
   "scripts": {
