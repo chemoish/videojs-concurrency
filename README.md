@@ -32,6 +32,10 @@ videojs('player_id').concurrency({
 
 Type: `Object`  
 
+#### headers
+
+Type: `Object`  
+
 #### method
 
 Type: `String`  
@@ -72,14 +76,14 @@ Enables polling manipulation on unsuccessful concurrency request.
 
 ---
 
-#### idle_delay
+#### idleDelay
 
 Type: `Number`  
 Default: `1000 * 60 * 30`
 
 When paused, become idle after 30 minutes.
 
-#### poll_delay
+#### pollDelay
 
 Type: `Number`  
 Default: `1000 * 20`
@@ -96,6 +100,8 @@ Default: `false`
 ## Contributing + Example
 
 ```bash
+npm install -g grunt-cli # only needed for contributing
+
 npm install
 
 npm start

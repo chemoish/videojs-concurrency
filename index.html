@@ -1,56 +1,57 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>VideoJS Concurrency Plugin</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>VideoJS Concurrency Plugin</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
-    </head>
-    <body>
-        <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" height="250" width="600" controls>
-            <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-            <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-            <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
 
-            <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a web browser that
-                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>
-        </video>
+  <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
+</head>
 
-        <script src="node_modules/video.js/dist/video.js"></script>
-        <script src="videojs.concurrency.js"></script>
+<body>
+  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" height="250" width="600" controls>
+    <source src="http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4" type="video/mp4" />
 
-        <script>
-            // initialize the plugin
-            videojs('player').ready(function () {
-                this.concurrency({
-                    url: '/package.json?_token=12345',
-                    data: {
-                        id: '54321'
-                    },
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
 
-                    idle_delay: 5000,
-                    poll_delay: 2000,
+  <script src="node_modules/video.js/dist/video.js"></script>
+  <script src="videojs.concurrency.js"></script>
 
-                    success: function (response) {
-                        this.options.url = '/package.json?_token=' + Math.floor(Math.random() * 10000);
-                        this.options.data.id = Math.floor(Math.random() * 10000);
+  <script>
+    // initialize the plugin
+    videojs('player').ready(function() {
+      this.concurrency({
+        url: '/package.json?_token=12345',
+        data: {
+          id: '54321'
+        },
 
-                        this.poll();
-                    },
+        idleDelay: 5000,
+        pollDelay: 2000,
 
-                    error: function (error) {},
+        success: function (response) {
+          this.options.url = '/package.json?_token=' + Math.floor(Math.random() * 10000);
+          this.options.data.id = Math.floor(Math.random() * 10000);
 
-                    debug: true
-                });
-            });
-        </script>
-    </body>
+          this.poll();
+        },
+
+        error: function (error) {},
+
+        debug: true
+      });
+    });
+  </script>
+</body>
+
 </html>
