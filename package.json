@@ -2,7 +2,7 @@
   "name": "videojs-concurrency",
   "version": "2.0.0",
   "description": "Video.js plugin for supporting concurrency",
-  "main": "./dist/videojs.concurrency.min.js",
+  "main": "src/videojs-concurrency",
   "scripts": {
     "build": "npm run build:production && npm run build:development",
     "build:development": "webpack --config webpack/webpack.config",
