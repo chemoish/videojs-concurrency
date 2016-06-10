@@ -66,14 +66,6 @@ var Concurrency = {
         player.on('play', this.onPlay.bind(this));
     },
 
-    error(message, ...messages) {
-        if (messages.length > 0) {
-            console.error(message, messages);
-        } else {
-            console.error(message);
-        }
-    },
-
     log(message, ...messages) {
         if (this.debug !== true) {
             return;
@@ -169,6 +161,14 @@ var Concurrency = {
 
         fetch(url, url_options)
             .then(function (response) {
+                if (response.status >= 400) {
+                    throw response;
+                }
+
+                return response;
+            })
+
+            .then(function (response) {
                 return response.json();
             })
 
@@ -179,9 +179,7 @@ var Concurrency = {
             })
 
             .catch((error) => {
-                this.error(error);
-
-                this.options.error.apply(this, [error]);
+                this.options.error.call(this, error);
             });
     }
 };
