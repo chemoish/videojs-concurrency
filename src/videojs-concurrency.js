@@ -1,9 +1,9 @@
+/* global videojs */
 /* eslint-disable no-console, no-new */
 
 import 'console-polyfill';
 import 'whatwg-fetch';
 import Url from './url';
-import videojs from 'video.js';
 
 /**
  * @name Concurrency Plugin
