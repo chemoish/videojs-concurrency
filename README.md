@@ -32,18 +32,51 @@ videojs('player_id').concurrency({
 
 Type: `Object`  
 
+#### debug
+
+Type: `boolean`  
+Default: `false`
+
+#### error
+
+Type: `function(error)`  
+Default: `noop`
+
+Enables polling manipulation on unsuccessful concurrency request.
+
 #### headers
 
 Type: `Object`  
 
+#### idleDelay
+
+Type: `number`  
+Default: `1000 * 60 * 30`
+
+When paused, become idle after 30 minutes.
+
 #### method
 
-Type: `String`  
+Type: `string`  
 Default: `GET`
+
+#### pollDelay
+
+Type: `number`  
+Default: `1000 * 20`
+
+Poll every 20 seconds.
+
+#### success
+
+Type: `function(response)`  
+Default: `noop`
+
+Enables polling manipulation on successful concurrency request.
 
 #### url
 
-Type: `String`  
+Type: `string`  
 
 ```js
 {
@@ -57,45 +90,6 @@ Type: `String`
     }
 }
 ```
-
----
-
-#### success
-
-Type: `successCallback(Response response)`  
-Default: `noop`
-
-Enables polling manipulation on successful concurrency request.
-
-#### error
-
-Type: `errorCallback(Error error)`  
-Default: `noop`
-
-Enables polling manipulation on unsuccessful concurrency request.
-
----
-
-#### idleDelay
-
-Type: `Number`  
-Default: `1000 * 60 * 30`
-
-When paused, become idle after 30 minutes.
-
-#### pollDelay
-
-Type: `Number`  
-Default: `1000 * 20`
-
-Poll every 20 seconds.
-
----
-
-#### debug
-
-Type: `Boolean`  
-Default: `false`
 
 ## Contributing + Example
 

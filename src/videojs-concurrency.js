@@ -31,26 +31,23 @@ import Url from './url';
  * @param {Object} player VideoJS player
  * @param {Object} options={}
  * @param {Object} [options.data]
+ * @param {boolean} [options.debug=false]
+ * @param {function(error)} [options.error=noop]
  * @param {Object} [options.headers]
- * @param {String} [options.method=GET]
- * @param {String} options.url
- *
- * @param {errorCallback(error)} [options.error=noop]
- * @param {successCallback(response)} [options.success=noop]
- *
- * @param {Number} [options.idleDelay=30m]
- * @param {Number} [options.pollDelay=20s]
- *
- * @param {Boolean} [options.debug=false]
+ * @param {number} [options.idleDelay=30m]
+ * @param {string} [options.method=GET]
+ * @param {number} [options.pollDelay=20s]
+ * @param {function(response)} [options.success=noop]
+ * @param {string} options.url
  */
 
 class Concurrency {
   constructor(player, options = {}) {
     const defaults = {
-      idleDelay: 1000 * 60 * 30,
-      pollDelay: 1000 * 20,
       error: Function.prototype,
+      idleDelay: 1000 * 60 * 30,
       method: 'GET',
+      pollDelay: 1000 * 20,
       success: Function.prototype,
     };
 
