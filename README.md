@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/chemoish/videojs-concurrency.svg)](https://travis-ci.org/chemoish/videojs-concurrency)
 
-> Video.js plugin for supporting concurrency.
+> Video.js plugin for supporting concurrency—A strategy for limiting the amount of concurrent streams a user can start.
 
 ## Getting Started
 
